@@ -7,21 +7,13 @@ import 'regenerator-runtime/runtime';
 
 const recipeContainer = document.querySelector('.recipe');
 
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
-
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////
 
 
 
-const showRecipe = async function() {
+const controlRecipes = async function() {
   try {
     const id = window.location.hash.slice(1);
 
@@ -35,10 +27,13 @@ const showRecipe = async function() {
     //2) Rending Recipe
     recipeView.render(model.state.recipe)
   } catch (err) {
-    alert(err);
+    console.log(err);
   }
 };
 
-['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipe));
-// window.addEventListener('hashchange', showRecipe);
+const init = function() {
+  recipeView.addHandlerRender(controlRecipes)
+}
+init();
+// window.addEventListener('hashchange', controlRecipes);
 // window.addEventListener('load', showRecipe)

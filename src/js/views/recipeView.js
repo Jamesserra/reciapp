@@ -8,7 +8,7 @@ class RecipeView {
   render(data) {
     this.#data = data;
     const markup = this.#generateMarkup();
-    this.#clear;
+    this.#clear();
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -27,6 +27,10 @@ class RecipeView {
       this.#parentElement.innerHTML = '';
       this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   };
+
+  addHandlerRender(handler) {
+    ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
+  }
 
   #generateMarkup() {
     return `
