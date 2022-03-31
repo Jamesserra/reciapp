@@ -22,18 +22,18 @@ class PaginationView extends View {
 
       //Page 1 and there are other pages
         if(curPage === 1 && numPages > 1) {
-          return this._generateMarkupNextButton(curPage)
+          return this._generateMarkupNextButton(curPage + 1)
         }
         
         //Last Page
         if(curPage === numPages && numPages > 1) {
-          return this._generateMarkupPrevButton(curPage)
+          return this._generateMarkupPrevButton(curPage - 1)
         }
         
         //Other Page
         if(curPage < numPages) {
           return `
-            ${this._generateMarkupNextButton(curPage)}, ${this._generateMarkupPrevButton(curPage)}
+            ${this._generateMarkupPrevButton(curPage - 1)}, ${this._generateMarkupNextButton(curPage + 1)}
             `
         }
 
@@ -43,10 +43,8 @@ class PaginationView extends View {
 
     _generateMarkupNextButton(pg) { 
       return `
-      <button data-goto="${
-        pg + 1
-        }" class="btn--inline pagination__btn--next">
-          <span>Page ${pg + 1}</span>
+      <button data-goto="${pg}" class="btn--inline pagination__btn--next">
+          <span>Page ${pg}</span>
           <svg class="search__icon">
             <use href="${icons}#icon-arrow-right"></use>
           </svg>
@@ -55,13 +53,11 @@ class PaginationView extends View {
 
     _generateMarkupPrevButton(pg) { 
       return `
-        <button data-goto="${
-          pg - 1
-        }" class="btn--inline pagination__btn--prev">
+        <button data-goto="${pg}" class="btn--inline pagination__btn--prev">
           <svg class="search__icon">
             <use href="${icons}#icon-arrow-left"></use>
           </svg>
-          <span>Page ${pg - 1}</span>
+          <span>Page ${pg}</span>
         </button>`
     }
 }
