@@ -23,6 +23,8 @@ const controlRecipes = async function() {
     //0) Result view to mark selected result
     resultsView.update(model.getSearchResultsPage())
 
+    bookmarksView.update(model.state.bookmarks);
+
     //1) Load Recipe
     await model.loadRecipe(id)
 
@@ -82,8 +84,12 @@ const controlAddBookmark = function() {
   bookmarksView.render(model.state.bookmarks)
 }
 
+const controlBookmarks = function() {
+  bookmarksView.render(model.state.bookmarks)
+}
 
 const init = function() {
+  bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
@@ -93,3 +99,8 @@ const init = function() {
 init();
 // window.addEventListener('hashchange', controlRecipes);
 // window.addEventListener('load', showRecipe)
+
+const clearBookmarks = function() {
+  localStorage.clear('bookmarks');
+}
+//clearBookmarks();
