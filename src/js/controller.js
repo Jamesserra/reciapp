@@ -1,11 +1,11 @@
 import * as model from './model.js';
+import { MODAL_CLOSE_SEC } from './config.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import bookmarksView from './views/bookmarksView.js';
 import paginationView from './views/paginationView.js';
 import addRecipeView from './views/addRecipeView.js';
-
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -90,8 +90,28 @@ const controlBookmarks = function() {
   bookmarksView.render(model.state.bookmarks)
 }
 
-const controlAddRecipe = function(newRecipe) {
-  console.log(newRecipe);
+const controlAddRecipe = async function(newRecipe) {
+  // console.log(newRecipe);
+  try {
+    recipeView.renderSpinner();
+
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
+
+    //Render Recipe
+    recipeView.render(model.state.recipe);
+
+    //Success Message
+    addRecipeView.renderMessage();
+
+    //Close form window
+    setTimeout(function() {
+      addRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000)
+  } catch(err) {
+    console.log('Error 🤣');
+    addRecipeView.renderError(err.message)
+  }
 }
 
 const init = function() {
@@ -106,8 +126,3 @@ const init = function() {
 init();
 // window.addEventListener('hashchange', controlRecipes);
 // window.addEventListener('load', showRecipe)
-
-const clearBookmarks = function() {
-  localStorage.clear('bookmarks');
-}
-//clearBookmarks();
